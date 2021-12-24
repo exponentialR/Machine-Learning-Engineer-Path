@@ -16,3 +16,16 @@ def get_initializer(embeddin_dim, vocab_size):
     initial_bounds = 0.5/embedding_dim
     initializer = tf.random.uniform((vocab_size, embeddin_dim), minval=initial_bounds, maxval=initial_bounds)
     return initializer
+
+
+def truncate_sequences(sequence, max_length):
+    input_sequence = sequence[:max_length-1]
+    target_sequence = sequence[1:max_length]
+    return input_sequence, target_sequence
+
+def pad_sequences(sequence, max_length):
+    padding_amount = max_length - len(sequence)
+    padding = [0 for i in range(padding_amount)]
+    input_sequence = sequence[:-1] + padding
+    target_sequence = sequence[1:] + padding
+    return input_sequence, target_sequence
