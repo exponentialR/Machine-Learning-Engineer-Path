@@ -4,7 +4,7 @@ import tensorflow as tf
 from NLP.utils.util_func import pad_sequences, truncate_sequences 
 
 
-class LanguageModel9object:
+class LanguageModel(object):
 
     def __init__(self, vocab_size, max_length, num_lstm_units, num_lstm_layers):
         self.vocab_size = vocab_size
