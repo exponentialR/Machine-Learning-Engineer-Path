@@ -29,3 +29,8 @@ def pad_sequences(sequence, max_length):
     input_sequence = sequence[:-1] + padding
     target_sequence = sequence[1:] + padding
     return input_sequence, target_sequence
+
+def get_bi_state_parts(state_fw, state_bw):
+    bi_state_c = tf.concat([state_fw[0], state_bw[0]], -1)
+    bi_state_h = tf.concat([state_fw[1], state_bw[1]], -1)
+    return bi_state_c, bi_state_h
