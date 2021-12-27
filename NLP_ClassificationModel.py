@@ -31,7 +31,7 @@ class ClassificationModel(object):
     def get_input_embeddings(self, input_sequences):
         input_col = tf.compat.v1.feature_column.categorical_column_with_identity('inputs', self.vocab_size)
         embed_size = int(self.vocab_size**0.25)
-        embed_col = tf.compat.v1.feature_column.embedding_column(nput_col, embed_size)
+        embed_col = tf.compat.v1.feature_column.embedding_column(input_col, embed_size)
         input_dict = {'inputs': input_sequences}
         input_embeddings = tf.compat.v1.feature_column.input_layer(input_dict, [embed_col])
         sequence_lengths = tf.compat.v1.placeholder('int64', shape = (None,), name = 'input_layer/input_embedding/sequence_length')

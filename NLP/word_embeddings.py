@@ -40,7 +40,7 @@ class EmbeddingModel(object):
         return pairs
 
 
-    def forward(self, targed_ids):
+    def forward(self, target_ids):
         initializer = get_initializer(self.embedding_dim, self.vocab_size)
         self.embedding_matrix = tf.compat.v1.get_variable('embedding_matrix', initializer=initializer)
         embeddings = tf.compat.v1.nn.embedding_lookup(self.embedding_matrix, target_ids)
@@ -74,4 +74,3 @@ class EmbeddingModel(object):
         squeezed_cos_sims = tf.squeeze(cos_sims)
         top_k_output = tf.math.top_k(squeezed_cos_sims, k)
         return top_k_output
-        

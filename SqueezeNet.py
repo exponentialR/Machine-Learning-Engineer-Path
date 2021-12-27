@@ -15,7 +15,7 @@ class SqueezeNetModel(object):
         updated_image = tf.image.random_flip_left_right(crop_image)
         return updated_image
     
-    def image_preprocessing(self, data, istraining):
+    def image_preprocessing(self, data, is_training):
         reshaped_image = tf.reshape(data, [3, self.original_dim, self.original_dim])
         transposed_image = tf.transpose(reshaped_image, [1, 2, 0])
         float_image = tf.cast(transposed_image, tf.float32)
