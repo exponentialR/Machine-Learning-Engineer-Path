@@ -15,4 +15,10 @@ def merge_dfs(df1, df2):
     """This function merges two input dataframes along their columns"""
     merged_df = pd.merge(df1, df2)
     return merged_df
-    
+
+def col_list_sum(df, col_list, weights = None):
+    """This is a utility function to calculate the sum  of multiple columns across a DataFrame"""
+    col_df = df[col_list]
+    if weights is not None:
+        col_df = col_df.mutiply(weights)
+    return col_df.sum(axis)
