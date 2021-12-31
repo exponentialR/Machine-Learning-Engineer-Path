@@ -1,7 +1,8 @@
 import pandas as pd
 import numpy as np
-from sklearn import linear_model
+from sklearn import linear_model, tree, metrics
 from sklearn.preprocessing import scale, Normalizer, PCA
+from sklearn.model_selection import train_test_split, cross_val_score
 
 
 def concat_rows(df1, df2):
@@ -105,3 +106,45 @@ def multiclass_lr(data, labels, max_iter):
   reg = linear_model.LogisticRegression(solver = 'lbfgs', max_iter = max_iter, multi_class = 'multinomial')
   reg.fit(data, labels)
   return reg
+
+
+def dataset_splitter(data, labels, test_size=0.25):
+  split_dataset = train_test_split(data, labels, test_size = test_size)
+  train_set = (split_dataset[0], split_dataset[2])
+  test_set = (split_dataset[1], split_dataset[3])
+  return train_set, test_set
+
+
+def cv_decision_tree(is_clf, data, labels,
+                     max_depth, cv):
+  if is_clf:
+    d_tree = tree.DecisionTreeClassifier(max_depth=max_depth)
+  else:
+    d_tree = tree.DecisionTreeRegressor(max_depth=max_depth)
+  scores = cross_val_score(d_tree, data, labels, cv=cv)
+  return scores
+
+def evaluate_regression_model(train_data, train_labels, test_data, test_labels):
+    reg = tree.DecisionTreeRegressor()
+    Error_Predict = {}
+    # predefined train and test sets
+    reg.fit(train_data, train_labels)
+    predictions = reg.predict(test_data)
+    r2 = metrics.r2_score(test_labels, predictions)
+    Error_Predict['R-Squared'] = r2
+    print('R2: {}\n'.format(r2))
+    mse = metrics.mean_squared_error(test_labels, predictions)
+    Error_Predict['Mean Squared Error'] = mse
+    print('MSE: {}\n'.format(mse))
+    mae = metrics.mean_absolute_error(test_labels, predictions)
+    Error_Predict['Mean Absolute Error'] = mae
+    print('MAE: {}\n'.format(mae))
+    return Error_Predict
+
+def evaluate_classification_model(train_data, train_labels, test_data, test_labels):
+    clf = tree.DecisionTreeClassifier()
+    # predefined train and test sets
+    clf.fit(train_data, train_labels)
+    predictions = clf.predict(test_data)
+    acc = metrics.accuracy_score(test_labels, predictions)
+    print('Accuracy: {}\n'.format(acc))
