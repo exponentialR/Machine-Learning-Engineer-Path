@@ -1,5 +1,8 @@
 import pandas as pd
 import numpy as np
+from sklearn import linear_model
+from sklearn.preprocessing import scale, Normalizer, PCA
+
 
 def concat_rows(df1, df2):
     """this function concatenates the 
@@ -57,3 +60,48 @@ def concat_arrays(data1, data2):
 def save_points(save_file):
   points = np.random.uniform(low = -2.5, high = 2.5, size = (100, 2))
   np.save(save_file, points)
+
+
+def standardize_data(data):
+    scaled_data = scale(data)
+    return scaled_data
+
+def normalize_data(data):
+  normalizer = Normalizer()
+  norm_data = normalizer.fit_transform(data)
+  return norm_data
+
+def pca_data(data, n_components):
+  pca_obj = PCA(n_components = n_components)
+  component_data = pca_obj.fit_transform(data)
+  return component_data
+
+def separate_data(component_data, labels, label_names)1:
+    separated_data = [] 
+    def get_label_info(component_data, labels, class_label, label_names):
+        label_name = label_names[class_label]
+        label_data = component_data[labels == class_label]
+        return (label_name, label_data)
+    for class_label in range(len(label_names)):
+        separated_data.append(get_label_info(component_data, labels, class_label, label_names))
+    return separated_data
+
+def cv_ridge_reg(data, labels, alphas):
+    reg = linear_model.RidgeCV(alphas = alphas)
+    reg.fit(data, labels)
+    return reg
+
+def lasso_reg(data, labels, alpha):
+  reg = linear_model.Lasso(alpha=alpha)
+  reg.fit(data, labels)
+  return reg
+
+def bayes_ridge(data, labels):
+    reg = linear_model.BayesianRidge()
+    reg.fit(data, labels)
+    return reg
+
+def multiclass_lr(data, labels, max_iter):
+  reg = linear_model.LogisticRegression(solver = 'lbfgs', max_iter = max_iter, multi_class = 'multinomial')
+  reg.fit(data, labels)
+  return reg
