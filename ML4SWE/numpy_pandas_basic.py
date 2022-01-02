@@ -3,7 +3,7 @@ import numpy as np
 from sklearn import linear_model, tree, metrics
 from sklearn.preprocessing import scale, Normalizer, PCA
 from sklearn.model_selection import train_test_split, cross_val_score
-
+from sklearn.cluster import MiniBatchKMeans, KMeans, FeatureAgglomeration
 
 def concat_rows(df1, df2):
     """this function concatenates the 
@@ -148,3 +148,21 @@ def evaluate_classification_model(train_data, train_labels, test_data, test_labe
     predictions = clf.predict(test_data)
     acc = metrics.accuracy_score(test_labels, predictions)
     print('Accuracy: {}\n'.format(acc))
+
+
+def kmeans_clustering(data, n_clusters, batch_size):
+  if batch_size is None:
+    kmeans = KMeans(n_clusters=n_clusters)
+  else:
+    kmeans = MiniBatchKMeans(n_clusters=n_clusters,
+                             batch_size=batch_size)
+  kmeans.fit(data)
+  return kmeans
+
+
+def feature_Agglomerate_PCA(data):
+    agg = FeatureAgglomeration(n_clusters=2)
+    new_data = agg.fit_transform(data)
+    print('New shape: {}\n'.format(new_data.shape))
+    print('First 10:\n{}\n'.format(repr(new_data[:10])))
+    return new_data
