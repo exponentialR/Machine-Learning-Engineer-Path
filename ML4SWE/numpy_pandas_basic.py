@@ -77,7 +77,7 @@ def pca_data(data, n_components):
   component_data = pca_obj.fit_transform(data)
   return component_data
 
-def separate_data(component_data, labels, label_names)1:
+def separate_data(component_data, labels, label_names):
     separated_data = [] 
     def get_label_info(component_data, labels, class_label, label_names):
         label_name = label_names[class_label]
