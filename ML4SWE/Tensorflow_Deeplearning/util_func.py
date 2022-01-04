@@ -10,3 +10,7 @@ def init_labels(output_size):
     labels = tf.compat.v1.placeholder(tf.int32, shape = (None, output_size), name = 'labels')
     return labels
 
+def model_layers(inputs, output_size):
+  logits = tf.keras.layers.Dense(output_size,
+                           name='logits')(inputs)
+  return logits
