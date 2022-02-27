@@ -33,11 +33,11 @@ def draw_styled_landmarks(image, results):
     #                         mp_drawing.DrawingSpec(color=(80,110,10), thickness=1, circle_radius=1), 
     #                         mp_drawing.DrawingSpec(color=(80,256,121), thickness=1, circle_radius=1)
     #                         ) 
-    # Draw pose connections
-    # mp_drawing.draw_landmarks(image, results.pose_landmarks, mp_holistic.POSE_CONNECTIONS,
-    #                         mp_drawing.DrawingSpec(color=(80,22,10), thickness=2, circle_radius=4), 
-    #                         mp_drawing.DrawingSpec(color=(80,44,121), thickness=2, circle_radius=2)
-                            # ) 
+    # # Draw pose connections
+    mp_drawing.draw_landmarks(image, results.pose_landmarks, mp_holistic.POSE_CONNECTIONS,
+                            mp_drawing.DrawingSpec(color=(80,22,10), thickness=2, circle_radius=4), 
+                            mp_drawing.DrawingSpec(color=(80,44,121), thickness=2, circle_radius=2)
+                            ) 
     # Draw left hand connections
     mp_drawing.draw_landmarks(image, results.left_hand_landmarks, mp_holistic.HAND_CONNECTIONS, 
                             mp_drawing.DrawingSpec(color=(121,22,76), thickness=2, circle_radius=4), 
@@ -82,6 +82,9 @@ for action in actions:
         except:
             pass
 cap = cv2.VideoCapture(0)
+fourcc = cv2.VideoWriter_fourcc(*'XVID')
+out = cv2.VideoWriter('output.avi', fourcc, 20.0, (640,480))
+
 # Set mediapipe model 
 with mp_holistic.Holistic(min_detection_confidence=0.5, min_tracking_confidence=0.5) as holistic:
     
@@ -114,18 +117,19 @@ with mp_holistic.Holistic(min_detection_confidence=0.5, min_tracking_confidence=
                     cv2.putText(image, 'Collecting frames for {} Video Number {}'.format(action, sequence), (15,12), 
                                cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 1, cv2.LINE_AA)
                     cv2.imshow('3 Channel Window', image1)
-
+                    out.write(image1)
                     # Show to screen
                     cv2.imshow('OpenCV Feed', image)
-                    cv2.imwrite('mediapipe{}.jpg'.format(sequence), image1)
+                    # cv2.imwrite('mediapipe{}.jpg'.format(sequence), image1)
                     cv2.waitKey(500)
                 else: 
                     cv2.putText(image, 'Collecting frames for {} Video Number {}'.format(action, sequence), (15,12), 
                                cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 1, cv2.LINE_AA)
                     # Show to screen
                     cv2.imshow('OpenCV Feed', image)
+                    out.write(image1)
                     cv2.imshow('3 Channel Window', image1)
-                    cv2.imwrite('mediapipe{}.jpg'.format(sequence), image1)
+                    # cv2.imwrite('mediapipe{}.jpg'.format(sequence), image1)
                 
                 # NEW Export keypoints
                 keypoints = extract_keypoints(results)
